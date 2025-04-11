@@ -1,0 +1,901 @@
+Greeting Message
+
+App.js
+
+import React from "react";
+import Greeting from "./greetings.js"
+
+function App(){
+    return (
+    <div>
+        <Greeting name = "PRAKHAR"/>
+        <Greeting name = "Deepseek"/>
+        <Greeting name = "Qwen"/>
+    </div>
+    );
+}
+export default App;
+
+greetings.js
+
+import React from "react";
+
+function Greeting(props){
+    return <h1>Hello! {props.name}</h1>
+}
+
+export default Greeting;
+
+----
+
+Counter using class components
+
+counter.js
+
+import React from "react";
+import { Component } from "react";
+
+class Counter extends Component{
+    constructor(props){
+        super(props);
+        this.state = {count:0};
+    }
+    increment = () => {
+        this.setState({ count: this.state.count + 1 });
+    }
+
+    decrement = () => {
+        this.setState({ count: this.state.count - 1 });
+    }
+
+    render(){
+        return(
+            <div>
+                <button onClick={this.increment}>+</button>
+                <button onClick={this.decrement}>-</button>
+                <h1>{this.state.count}</h1>
+            </div>
+        );
+    }
+}
+export default Counter;
+
+
+-------
+
+Counter using hooks
+
+import React, {useState} from "react";
+
+function Counter(){
+    const [count, setCount] = useState(0);
+
+    const increment = () => {
+        setCount(count+1);
+    }
+    
+    const decrement = () => {
+        setCount(count-1);
+    }
+
+    return (
+        <div>
+            <center>
+                <h1>Counter: {count} </h1>
+            <button onClick={increment}>+</button>
+            <button onClick={decrement}>-</button>
+            </center>
+        </div>
+    );
+}
+
+export default Counter;
+
+
+-----
+
+Dynamic List Rendering using .map()
+
+import React from "react";
+
+function Users(props){
+    return (
+        <div>
+            <ul>
+                {props.arr.map((user,index) => (
+                    <li key = {index}>{user}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+export default Users;
+
+App.js
+
+import React from "react";
+import Users from "./users.js"
+
+function App() {
+    const users = ['John', 'Jane', 'Doe'];
+  
+    return (
+      <div>
+        <Users arr ={users} />
+      </div>
+    );
+  }
+export default App;
+
+
+------
+
+Change Theme
+
+import React, {useState} from "react";
+
+function Toggle(){
+    const [theme, setTheme] = useState("light");
+
+    const switchTheme = () => {
+        setTheme(theme==="light"?"dark":"light");
+    };
+    const style = 
+    {
+        backgroundColor:(theme==="light"?"#ffffff":"#000000"),
+        height: "800px", 
+        padding: "20px",
+
+    };
+    return (
+        <div style = {style}> 
+            <button onClick={switchTheme}>Change Theme</button>
+        </div>
+    );
+}
+
+export default Toggle;
+
+----
+
+Fetch API
+
+import React, {useState, useEffect} from "react";
+
+function FetchAPI(){
+    const [user,setUser] = useState([]);
+
+    useEffect(()=>{
+        fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json()).
+        then(data => setUser(data));
+    },[]);
+
+    return (
+        <div>
+            <ul>
+            {user.map( users =>{
+                return <li key = {users.id}>
+                    <p>{users.name}</p>
+                    <p>{users.email}</p>
+                    <p>{users.website}</p>
+                </li>      
+            })}
+            </ul>
+        </div>
+    );
+}
+export default FetchAPI;
+
+-----
+
+Form
+
+import React, {useState} from "react";
+
+function FormHandler(){
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [submit, setSubmit] = useState(false);
+
+    const onsubmit = (e)=>{
+        e.preventDefault();
+        setSubmit(true);
+    };
+    let display;
+    if (submit) {
+        display = (
+            <div>
+                <h3>You entered:</h3>
+                <p>Name: {name}</p>
+                <p>Email: {email}</p>
+            </div>
+        );
+    }
+    return (
+        <div>
+            <form onSubmit = {onsubmit}>
+                <p>Name:<input value = {name} onChange = {(e) => {setName(e.target.value)}}></input></p>
+                <p>Email:<input value = {email} onChange = {(e) => {setEmail(e.target.value)}}></input></p>
+
+                <button>Submit</button>
+            </form>
+            
+            {display}
+        </div>
+    );
+}
+
+export default FormHandler;
+
+----
+
+Window Resize
+
+import React, {useState, useEffect} from "react";
+
+function Resize(){
+    const [size, setSize] = useState(window.innerWidth);
+
+    useEffect(()=>{
+        const handler = ()=>{
+            setSize(window.innerWidth);
+        }
+        window.addEventListener("resize",handler);
+
+        return () => {window.removeEventListener("resize",handler)};
+    },[]);
+
+    return (
+        <div>
+            <h1>{size}</h1>
+        </div>
+    );
+}
+
+export default Resize;
+
+
+------
+
+import React, {useState, useEffect} from "react";
+
+function Resize(){
+    const [size, setSize] = useState(window.innerWidth);
+
+    useEffect(()=>{
+        const handler = ()=>{
+            setSize(window.innerWidth);
+        }
+        window.addEventListener("resize",handler);
+
+        return () => {window.removeEventListener("resize",handler)};
+    },[]);
+
+    return (
+        <div>
+            <h1>{size}</h1>
+        </div>
+    );
+}
+
+export default Resize;
+
+------
+
+Parent-Child Component
+
+child.js
+
+import React from 'react';
+
+function Child(props) {
+  return <button onClick={props.updateMsg}>Change Parent Message</button>;
+}
+
+export default Child;
+
+
+App.js
+
+import React, {useState} from "react";
+import Child from "./resize.js"
+
+function App() {
+    const [message, setMessage] = useState('Hello');
+
+    return (
+      <div>
+        <h1>{message}</h1>
+        <Child updateMsg={() => setMessage('Updated!')} />
+      </div>
+    );
+};
+export default App;
+
+------------
+
+Stopwatch
+
+import React, {useState, useEffect} from "react";
+
+function Stopwatch(){
+    const [timer, setTimer] = useState(0);
+    const [status, setStatus] = useState(false);
+
+    const start = ()=>{
+        setStatus(true);
+    };
+    
+    const stop = ()=>{
+        setStatus(false);
+    };
+    
+    const reset = ()=>{
+        setStatus(false);
+        setTimer(0);
+    };
+
+    useEffect(()=>{
+        let interval;
+        if(status){
+            interval = setInterval(()=>{setTimer(timer+1)},1000);
+        }
+        return () => clearInterval(interval); 
+    },[status,timer]);
+
+    return (
+        <div style = {{alignContent: "center"}}> 
+            <h1>{timer}</h1>
+            <button onClick={start}>Start</button>
+            <button onClick={stop}>Stop</button>
+            <button onClick={reset}>Reset</button>
+        </div>
+    );
+}
+
+export default Stopwatch;
+
+-------
+week - 5
+
+Product
+
+import React, {useState} from "react";
+import PropTypes from "prop-types";
+
+function Product(){
+    const products = [
+        {name: "openAI", price: "$20", available:true},
+        {name: "deepseek", price: "$10",available:false},
+        {name: "Mistral", price: "$6",available:true},
+    ];
+
+    return (
+        <div>
+            {products.map((product, index)=>(
+                <ProductCard key = {index} product = {product}/>
+            ))}
+        </div>
+    );
+};
+
+function ProductCard(props){
+    const style = {
+        border: "10px solid #000000",
+        padding: "10px",
+        margin: "10px",
+        backgroundColor: (props.product.available?"lightgreen":"lightcoral"),
+    };
+
+    return (
+        <div style = {style}>
+            <h2>{props.product.name}</h2>
+            <h4>{props.product.price}</h4>
+            <p>{props.product.available}</p>
+        </div>
+    );
+};
+
+ProductCard.propTypes = {
+    product: PropTypes.shape(
+        {
+            name:PropTypes.string.isRequired,
+            price:PropTypes.string.isRequired,
+            available:PropTypes.bool.isRequired,
+        }
+    ).isRequired,
+};
+
+export default Product;
+
+------------
+
+User Card
+
+user.js
+
+import React from "react";
+import PropTypes, { func } from "prop-types"
+import UserCard from "./usercard2";
+import "./usercard.css"
+
+function User(){
+    const users = [
+        {name: "Prakhar", email: "prakhar@gmail.com"},
+        {name: "Karpathy", email: "sama@gmail.com"}
+    ];
+
+    return (
+        <div>
+            <h1>User Cards</h1>
+            {users.map((user,index) => {
+                return <UserCard key = {index} user = {user}/>
+            })}
+        </div>
+    );
+};
+
+export default User;
+
+
+usercard.js
+
+import React from "react";
+import PropTypes from "prop-types"
+import style from "./usercard.module.css"
+
+function UserCard(props){
+    return (
+        <div className = {style.cardid}>
+            <h3>{props.user.name}</h3>
+            <p>{props.user.email}</p>
+        </div>
+    );
+}
+
+UserCard.propTypes = {
+    user: PropTypes.shape(
+        {
+            name: PropTypes.string.isRequired,
+            email: PropTypes.string.isRequired,
+        }
+    ).isRequired,
+}
+
+export default UserCard;
+
+usercard.module.css
+
+.cardid {
+    border: 15px solid black;
+    padding: 20px 20px;
+    margin: 20px 20px;
+}
+
+----
+
+
+Product Review
+
+productcard.js
+
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import styles from './ProductReview.module.css';
+
+const ProductReview = (props) => {
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState("");
+
+  const addReview = () => {
+    setReviews([...reviews, newReview]);
+    setNewReview("");
+    
+  };
+
+  return (
+    <div className={styles.productReview}>
+      <h1>{props.product.name}</h1>
+      <p>{props.product.price}</p>
+      <h2>Reviews</h2>
+      <input
+        type="text"
+        value={newReview}
+        onChange={(e) => setNewReview(e.target.value)}
+        placeholder="Add a review"
+      />
+      <button onClick={addReview}>Add Review</button>
+      <ul>
+        {reviews.map((review, index) => (
+          <li key={index} className={styles.reviewItem}>
+            <p>{review}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+ProductReview.propTypes = {
+  product: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default ProductReview;
+
+
+productlist.js
+
+import React from "react";
+import ProductReview from "./productcard.js"; 
+
+function ProductList() {
+    const products = [
+        { name: "Headphone", price: "$40", review: [] },
+        { name: "Lamp", price: "$30", review: [] },
+        { name: "VIT", price: "$40", review: [] },
+        { name: "Phone", price: "$20", review: [] }
+    ];
+
+    return (
+        <div>
+            <h1>Product Catalog</h1>
+            {products.map((product, index) => (
+                <ProductReview key={index} product={product} />
+            ))}
+        </div>
+    );
+}
+
+export default ProductList;
+
+
+-------
+
+Category Filter
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import styles from './ProductFilter.module.css';
+
+const ProductFilter = () => {
+  const [products, setProducts] = useState([
+    { name: 'Laptop', category: 'Electronics' },
+    { name: 'Shirt', category: 'Clothing' },
+    { name: 'Lamp', category: 'Home Decor' },
+    { name: 'Phone', category: 'Electronics' },
+    { name: 'Jeans', category: 'Clothing' },
+    { name: 'Couch', category: 'Home Decor' },
+  ]);
+  const [filter, setFilter] = useState('');
+
+  const filteredProducts = products.filter((product) =>
+    filter ? product.category === filter : true
+  );
+
+  return (
+    <div className={styles.productFilter}>
+      <h1>Product Filter</h1>
+      <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+        <option value="">All</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Home Decor">Home Decor</option>
+      </select>
+      <ul>
+        {filteredProducts.map((product, index) => (
+          <ProductItem key={index} product={product} />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const ProductItem = ({ product }) => {
+  return (
+    <li className={styles.productItem}>
+      <h2>{product.name}</h2>
+      <p>Category: {product.category}</p>
+    </li>
+  );
+};
+
+ProductItem.propTypes = {
+  product: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default ProductFilter;
+
+
+product.module.filter
+
+.productFilter {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 5px;
+  }
+  
+  .productItem {
+    margin-bottom: 10px;
+  }
+  
+
+
+------
+
+Calculator
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+const Calculator = () => {
+  const [input, setInput] = useState('');
+  const [result, setResult] = useState(0);
+
+  const handleClick = (value) => {
+    setInput(input + value);
+  };
+
+  const handleClear = () => {
+    setInput('');
+    setResult(0);
+  };
+
+  const handleCalculate = () => {
+    try {
+      setResult(eval(input));
+    } catch (e) {
+      setResult('Error');
+    }
+  };
+
+  return (
+    <div>
+      <h1>Calculator</h1>
+      <input type="text" value={input} readOnly />
+      <div>
+        <Button value="1" onClick={handleClick} />
+        <Button value="2" onClick={handleClick} />
+        <Button value="3" onClick={handleClick} />
+        <Button value="+" onClick={handleClick} />
+      </div>
+      <div>
+        <Button value="4" onClick={handleClick} />
+        <Button value="5" onClick={handleClick} />
+        <Button value="6" onClick={handleClick} />
+        <Button value="-" onClick={handleClick} />
+      </div>
+      <div>
+        <Button value="7" onClick={handleClick} />
+        <Button value="8" onClick={handleClick} />
+        <Button value="9" onClick={handleClick} />
+        <Button value="*" onClick={handleClick} />
+      </div>
+      <div>
+        <Button value="0" onClick={handleClick} />
+        <Button value="C" onClick={handleClear} />
+        <Button value="=" onClick={handleCalculate} />
+        <Button value="/" onClick={handleClick} />
+      </div>
+      <h2>Result: {result}</h2>
+    </div>
+  );
+};
+
+const Button = ({ value, onClick }) => {
+  const style = {
+    width: '50px',
+    height: '50px',
+    margin: '5px',
+    fontSize: '20px',
+    backgroundColor: '#f0f0f0',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  };
+
+  return <button style={style} onClick={() => onClick(value)}>{value}</button>;
+};
+
+Button.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
+export default Calculator;
+
+
+------
+
+Task
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './TaskTracker.css';
+
+const TaskTracker = () => {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = () => {
+    setTasks([...tasks, { text: newTask, completed: false }]);
+    setNewTask('');
+  };
+
+  const toggleComplete = (index) => {
+    const updatedTasks = tasks.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  const completedCount = tasks.filter((task) => task.completed).length;
+  const pendingCount = tasks.length - completedCount;
+
+  return (
+    <div>
+      <h1>Task Tracker</h1>
+      <input
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Add a new task"
+      />
+      <button onClick={addTask}>Add Task</button>
+      <p>Completed Tasks: {completedCount}</p>
+      <p>Pending Tasks: {pendingCount}</p>
+      <ul>
+        {tasks.map((task, index) => (
+          <TaskItem
+            key={index}
+            task={task}
+            onToggleComplete={() => toggleComplete(index)}
+            onDelete={() => deleteTask(index)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const TaskItem = ({ task, onToggleComplete, onDelete }) => {
+  return (
+    <li className={task.completed ? 'completed' : ''}>
+      <span onClick={onToggleComplete}>{task.text}</span>
+      <button onClick={onDelete}>Delete</button>
+    </li>
+  );
+};
+
+TaskItem.propTypes = {
+  task: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+  }).isRequired,
+  onToggleComplete: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+export default TaskTracker;
+
+
+------
+
+Dynamic Contact List
+
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './ContactList.css';
+
+const ContactList = () => {
+  const [contacts, setContacts] = useState([]);
+  const [newContact, setNewContact] = useState({ name: '', email: '' });
+
+  const addContact = () => {
+    setContacts([...contacts, newContact]);
+    setNewContact({ name: '', email: '' });
+  };
+
+  const editContact = (index, updatedContact) => {
+    const updatedContacts = contacts.map((contact, i) =>
+      i === index ? updatedContact : contact
+    );
+    setContacts(updatedContacts);
+  };
+
+  const deleteContact = (index) => {
+    const updatedContacts = contacts.filter((_, i) => i !== index);
+    setContacts(updatedContacts);
+  };
+
+  return (
+    <div>
+      <h1>Contact List</h1>
+      <input
+        type="text"
+        placeholder="Name"
+        value={newContact.name}
+        onChange={(e) => setNewContact({ ...newContact, name: e.target.value })}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={newContact.email}
+        onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
+      />
+      <button onClick={addContact}>Add Contact</button>
+      <ul>
+        {contacts.map((contact, index) => (
+          <ContactItem
+            key={index}
+            contact={contact}
+            onEdit={(updatedContact) => editContact(index, updatedContact)}
+            onDelete={() => deleteContact(index)}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const ContactItem = ({ contact, onEdit, onDelete }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContact, setEditedContact] = useState(contact);
+
+  const handleSave = () => {
+    onEdit(editedContact);
+    setIsEditing(false);
+  };
+
+  return (
+    <li>
+      {isEditing ? (
+        <>
+          <input
+            type="text"
+            value={editedContact.name}
+            onChange={(e) => setEditedContact({ ...editedContact, name: e.target.value })}
+          />
+          <input
+            type="email"
+            value={editedContact.email}
+            onChange={(e) => setEditedContact({ ...editedContact, email: e.target.value })}
+          />
+          <button onClick={handleSave}>Save</button>
+        </>
+      ) : (
+        <>
+          <span>{contact.name}</span>
+          <span>{contact.email}</span>
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <button onClick={onDelete}>Delete</button>
+        </>
+      )}
+    </li>
+  );
+};
+
+ContactItem.propTypes = {
+  contact: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }).isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
+
+export default ContactList;
+
